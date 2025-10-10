@@ -1,0 +1,114 @@
+---
+title: "tarea 02 - Guillermo Medinilla"
+output: html_document
+---
+
+```{r}
+install.packages("arules", type="binary")
+install.packages("readxl")
+```
+
+```{r}
+library(arules)
+library(readxl)
+library(dplyr)
+```
+
+```{r}
+datos <- read_excel("graduados-superior-2023.xlsx")
+```
+
+```{r}
+data.frame(1:ncol(datos), colnames(datos))
+```
+
+```{r}
+datos %>% group_by(AÑO) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(CARRERA) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(Departamento) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(Nivel_Educativo) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(Sexo) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(Edad) %>% summarise(conteo = n())
+```
+
+
+```{r}
+datos %>% group_by(Grupos_Quinquenales) %>% summarise(conteo = n())
+```
+
+```{r}
+datos %>% group_by(Sector) %>% summarise(conteo = n())
+```
+
+```{r}
+datos %>% group_by(Pueblo_Pertenencia) %>% summarise(conteo = n())
+```
+
+
+```{r}
+# Quitamos la columna año porque todos los valores son el mismo
+datos <- subset(datos, select = -AÑO)
+```
+
+```{r}
+# Quitamos la columna edad porque vamos a usar grupos_quinquenales porque los valores tienen más sentido
+datos <- subset(datos, select = -Edad)
+```
+
+
+```{r}
+# Quitamos los departamentos incorrectos
+datos <- subset(datos, Departamento != '99')
+```
+
+```{r}
+# Buscamos graduaciones que no sean de ladinos o ignorados
+excluir_pueblos = c("Ladino", "Ignorado")
+datos <- datos %>%
+  filter(!Pueblo_Pertenencia %in% excluir_pueblos)
+```
+
+
+```{r}
+reglas <- apriori(datos, parameter = list(support=0.2, confidence=0.5))
+```
+
+```{r}
+inspect(reglas[0:37])
+```
+
+Patrón 1:
+En el rango de 20 a 24 años las personas de pueblo Maya se graduan a nivel Técnico
+
+Patrón 2:
+En el rango de 25 a 29 años las mujeres que se graduan pertenecen al pueblo Mayan 
+
+Patrón 3:
+Las personas que se graudan a nivel de Licenciatura son en el sector Público
+
+Enlace:
+https://github.com/medinillag/INTRODUCCION-A-LA-MINERIA-DE-DATOS-SECCION-A
+
+
+
+
