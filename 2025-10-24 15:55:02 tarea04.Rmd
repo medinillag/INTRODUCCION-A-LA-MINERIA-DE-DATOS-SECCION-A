@@ -1,0 +1,49 @@
+---
+title: "tarea04"
+output: html_document
+---
+
+**Importar Bibliotecas**
+
+```{r}
+library(readxl)
+library(arules)
+library(ggplot2)
+library(dplyr)
+```
+
+**Leer Archivo Excel**
+
+```{r}
+data <- read_excel("base-de-datos-violencia-intrafamiliar-ano-2024_v3.xlsx")
+```
+
+
+```{r}
+data_fp <- data[, c("VIC_REL_AGR", "HEC_TIPAGRE")]
+data_fp <- data_fp %>%
+  mutate(HEC_TIPAGRE_recodificado = as.numeric(factor(HEC_TIPAGRE)))
+```
+
+```{r}
+data_fp[is.na(data_fp)] <- -1
+```
+
+```{r}
+cluster <- kmeans(data_fp, centers = 5)
+```
+
+```{r}
+ggplot(data_fp, aes(x = VIC_REL_AGR, y = HEC_TIPAGRE_recodificado, color = as.factor(cluster$cluster))) +
+  geom_point() +
+  geom_point(data = as.data.frame(cluster$centers), aes(x = VIC_REL_AGR, y = HEC_TIPAGRE_recodificado), color="black", size=4, shape=17) +
+  labs(title = "Relación") +
+  theme_minimal()
+```
+
+```{r}
+data_fp %>%
+  group_by(HEC_TIPAGRE, HEC_TIPAGRE_recodificado) %>%
+  summarise(count = n())
+```
+
