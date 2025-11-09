@@ -20,7 +20,7 @@ Para buscar patrones y grupos interesantes a los cuáles nos permitan identifica
 | ----------- | ----------- |
 | [Apriori](algoritmo01) | Encontrar 3 patrones intersantes |
 | [FP Growth](algoritmo02) | Encontrar 3 patrones interesantes |
-| [K-Means](algoritmo02) | Encontrar 1 grupo interesante |
+| [K-Means](algoritmo03) | Encontrar 1 grupo interesante |
 
 ---
 
