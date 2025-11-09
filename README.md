@@ -6,7 +6,7 @@ En el siguiente repositorio encontraremos tareas y proyectos elaborados en el le
 
 ---
 ## Tabla de contenido
-| Títutlo | Descripción |
+| Título | Descripción |
 | ----------- | ----------- |
 | [Tarea 01](tarea01) | Resumen sobre artículo e instalación de RStudio |
 | [Tarea 02](tarea02) | Utilizar el algoritmo Apriori |
