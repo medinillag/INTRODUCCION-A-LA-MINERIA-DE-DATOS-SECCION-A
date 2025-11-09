@@ -1,0 +1,91 @@
+---
+title: "proyecto_1"
+output: html_document
+---
+
+Lectura de bibliotecas
+```{r}
+library(dplyr)
+library(purrr)
+library(readxl)
+library(arules)
+library(ggplot2)
+```
+
+Lectura de carpetas
+```{r}
+path_2023 <- "../../dataset/2023"
+path_2024 <- "../../dataset/2024"
+```
+
+Cargar todas las direcciones de los archivos en una sola lista
+```{r}
+excel_files <- c(
+  list.files(path = path_2023, pattern = "\\.xlsx?$", full.names = TRUE),
+  list.files(path = path_2024, pattern = "\\.xlsx?$", full.names = TRUE)
+)
+```
+
+Iterar esa lista y a cada archivo aplicar la función read_excel y concatenar cada dataframe resultante en uno solo
+```{r}
+datos <- excel_files %>%
+  map(read_excel) %>%
+  bind_rows()
+```
+
+Para evitar cargar todos los archivos nuevamente lo asignamos a una variable nueva
+```{r}
+df_final <- datos
+```
+
+Retirar registros que son desconocidos
+```{r}
+df_final <- subset(df_final, Área != '9')
+df_final <- subset(df_final, Sexo != '9')
+df_final <- subset(df_final, Nivel != '9')
+df_final <- subset(df_final, Pueblo_Per != '9')
+df_final <- subset(df_final, Jornada_Est != '9')
+df_final <- subset(df_final, Resultado_F != '9')
+df_final <- subset(df_final, Repitente != '9')
+df_final <- subset(df_final, Graduando != '9')
+```
+
+Filtros para delimitar grupos de interes
+```{r}
+df_final <- subset(df_final, Sector == '1') # Público
+df_final <- subset(df_final, Área == '2') # Rural
+df_final <- subset(df_final, Sexo == '1') # Hombre
+df_final <- subset(df_final, Repitente == '2') # No es repitente
+```
+
+Remover columnas que no aportan información
+```{r}
+df_final <- subset(df_final, select = -Año)
+df_final <- subset(df_final, select = -CodEstablecimiento)
+df_final <- subset(df_final, select = -Departamento_F)
+df_final <- subset(df_final, select = -Depto_mupio)
+df_final <- subset(df_final, select = -Departamento)
+df_final <- subset(df_final, select = -Grado)
+```
+
+Remover columnas que filtramos valores en específicos
+```{r}
+df_final <- subset(df_final, select = -Sector)
+df_final <- subset(df_final, select = -Área)
+df_final <- subset(df_final, select = -Sexo)
+df_final <- subset(df_final, select = -Repitente)
+```
+
+Cluster
+```{r}
+cluster <- kmeans(df_final, centers = 3)
+```
+
+Graficamos grupo
+```{r}
+ggplot(df_final, aes(x = Pueblo_Per, y = Jornada_Est, color = as.factor(cluster$cluster))) +
+  geom_point() +
+  geom_point(data = as.data.frame(cluster$centers), aes(x = Pueblo_Per, y = Jornada_Est), color="black", size=4, shape=17) +
+  labs(title = "Relación") +
+  theme_minimal()
+```
