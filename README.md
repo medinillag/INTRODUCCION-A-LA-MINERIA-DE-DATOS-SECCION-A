@@ -8,8 +8,8 @@ En el siguiente repositorio encontraremos tareas y proyectos elaborados en el le
 ## Tabla de contenido
 | Títutlo | Descripción |
 | ----------- | ----------- |
-| [Tarea 01][tarea01] | Title |
-| [Tarea 02][tarea02] | Title |
-| [Tarea 03][tarea03] | Title |
-| [Tarea 04][tarea04] | Text |
-| [Tarea 05][tarea05] | Text |
+| [Tarea 01](tarea01) | Resumen sobre artículo e instalación de RStudio |
+| [Tarea 02](tarea02) | Title |
+| [Tarea 03](tarea03) | Title |
+| [Tarea 04](tarea04) | Text |
+| [Tarea 05](tarea05) | Text |
