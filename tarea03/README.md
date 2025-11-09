@@ -6,3 +6,7 @@ Encontramos 3 patrones interesantes y los describimos para darles una explicaciÃ
 
 ---
 **Nota**: Esta tarea aÃºn no se ha entregado.
+
+---
+
+[Regresar](..)
