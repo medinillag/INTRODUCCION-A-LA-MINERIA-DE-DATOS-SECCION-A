@@ -1,0 +1,89 @@
+---
+title: "proyecto_1"
+output: html_document
+---
+
+Lectura de bibliotecas
+```{r}
+library(dplyr)
+library(purrr)
+library(readxl)
+library(arules)
+library(fim4r)
+```
+
+Lectura de carpetas
+```{r}
+path_2023 <- "../../dataset/2023"
+path_2024 <- "../../dataset/2024"
+```
+
+Cargar todas las direcciones de los archivos en una sola lista
+```{r}
+excel_files <- c(
+  list.files(path = path_2023, pattern = "\\.xlsx?$", full.names = TRUE),
+  list.files(path = path_2024, pattern = "\\.xlsx?$", full.names = TRUE)
+)
+```
+
+Iterar esa lista y a cada archivo aplicar la función read_excel y concatenar cada dataframe resultante en uno solo
+```{r}
+datos <- excel_files %>%
+  map(read_excel) %>%
+  bind_rows()
+```
+
+Para evitar cargar todos los archivos nuevamente lo asignamos a una variable nueva
+```{r}
+df_final <- datos
+```
+
+Retirar registros que son desconocidos
+```{r}
+df_final <- subset(df_final, Área != '9')
+df_final <- subset(df_final, Sexo != '9')
+df_final <- subset(df_final, Nivel != '9')
+df_final <- subset(df_final, Pueblo_Per != '9')
+df_final <- subset(df_final, Jornada_Est != '9')
+df_final <- subset(df_final, Resultado_F != '9')
+df_final <- subset(df_final, Repitente != '9')
+df_final <- subset(df_final, Graduando != '9')
+```
+
+Filtros para delimitar grupos de interes
+```{r}
+df_final <- subset(df_final, Sector == '2') # Privado
+df_final <- subset(df_final, Área == '2') # Rural
+df_final <- subset(df_final, Sexo == '2') # Mujer
+df_final <- subset(df_final, Repitente == '2') # No es repitente
+```
+
+Remover columnas que no aportan información
+```{r}
+df_final <- subset(df_final, select = -Año)
+df_final <- subset(df_final, select = -CodEstablecimiento)
+df_final <- subset(df_final, select = -Departamento_F)
+df_final <- subset(df_final, select = -Depto_mupio)
+df_final <- subset(df_final, select = -Departamento)
+df_final <- subset(df_final, select = -Grado)
+```
+
+```{r}
+df_final <- subset(df_final, select = -Sector)
+df_final <- subset(df_final, select = -Área)
+df_final <- subset(df_final, select = -Sexo)
+df_final <- subset(df_final, select = -Repitente)
+```
+
+Reglas
+```{r}
+reglas <- fim4r(df_final, method="fpgrowth", target="rules", supp=.2, conf=.5)
+```
+
+Revisar reglas
+Ordenamos de forma descedente según la columna lift porque nos ayuda a encontrar relaciones interesantes
+```{r}
+rf <- as(reglas, "data.frame")
+rf %>%
+  arrange(desc('lift'))
+```
