@@ -1,0 +1,57 @@
+---
+title: "tarea_03"
+output: html_document
+---
+
+Lectura de bibliotecas
+```{r}
+library(dplyr)
+library(purrr)
+library(readxl)
+library(arules)
+library(fim4r)
+```
+
+dirección del archivo
+```{r}
+path <- "base-de-datos-violencia-intrafamiliar-ano-2024_v3.xlsx"
+```
+
+Cargar archivo
+```{r}
+datos <- read_excel(path)
+```
+
+Para evitar cargar todos los registros nuevamente lo asignamos a una variable nueva
+```{r}
+df_final <- datos
+```
+
+```{r}
+df_final <- df_final[, c(
+  #"AGR_SEXO",
+  "AGR_EDAD",
+  #"AGR_ALFAB",
+  "AGR_ESCOLARIDAD",
+  "AGR_EST_CIV",
+  "AGR_GURPET",
+  #"AGR_NACIONAL",
+  #"AGR_TRABAJA",
+  #"AGR_OCUP",
+  "AGR_DEDICA"
+)]
+```
+
+
+Reglas
+```{r}
+reglas <- fim4r(df_final, method="fpgrowth", target="rules", supp=.2, conf=.5)
+```
+
+Revisar reglas
+Ordenamos de forma descedente según la columna lift porque nos ayuda a encontrar relaciones interesantes
+```{r}
+rf <- as(reglas, "data.frame")
+rf %>%
+  arrange(desc('lift'))
+```
