@@ -5,8 +5,5 @@ En esta tarea aplicamos el algoritmo FP Growth usando un dataset del ine. Lo pue
 Encontramos 3 patrones interesantes y los describimos para darles una explicación.
 
 ---
-**Nota**: Esta tarea aún no se ha entregado.
-
----
 
 [Regresar](..)
