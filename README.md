@@ -12,4 +12,5 @@ En el siguiente repositorio encontraremos tareas y proyectos elaborados en el le
 | [Tarea 02](tarea02) | Utilizar el algoritmo Apriori |
 | [Tarea 03](tarea03) | Utilizar el algoritmo FP Growth |
 | [Tarea 04](tarea04) | Utilizar el algoritmo K-Means |
+| [Tarea 05](tarea05) | Utilizar el algoritmo Árbol de decisión |
 | [Proyecto 01](proyecto01) | Utilizar los algoritmos antes vistos |
