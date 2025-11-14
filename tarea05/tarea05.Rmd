@@ -1,0 +1,68 @@
+---
+title: "tarea_03"
+output: html_document
+---
+
+Lectura de bibliotecas
+```{r}
+library(readxl)
+library(rpart)
+library(rpart.plot)
+library(dplyr)
+```
+
+dirección del archivo
+```{r}
+path <- "base-de-datos-violencia-intrafamiliar-ano-2024_v3.xlsx"
+```
+
+Cargar archivo
+```{r}
+data <- read_excel(path)
+```
+
+
+```{r}
+data$hombre = ifelse(data$VIC_SEXO==1, 1, 0)
+data$hombre
+```
+
+
+```{r}
+arbol <- rpart(
+  hombre ~
+    AGR_SEXO +
+    AGR_EDAD +
+    AGR_ALFAB +
+    AGR_TRABAJA +
+    AGR_EST_CIV +
+    AGR_DEDICA +
+    AGR_ESCOLARIDAD,
+  data = data, method = "class"
+)
+```
+
+```{r}
+rpart.plot(arbol, type=2, extra=0, under=TRUE, fallen.leaves=TRUE, box.palette ="BuGn", main="Hombre o no", cex=0.5)
+```
+
+```{r}
+persona <- data.frame(
+  AGR_SEXO = c(2),
+  AGR_EDAD = c(35),
+  AGR_ALFAB = c(1),
+  AGR_TRABAJA = c(2),
+  AGR_EST_CIV = c(2),
+  AGR_DEDICA = c(4),
+  AGR_ESCOLARIDAD = c(32)
+)
+```
+
+```{r}
+result <- predict(arbol, persona, type = "prob")
+result
+```
+
+
+
+
