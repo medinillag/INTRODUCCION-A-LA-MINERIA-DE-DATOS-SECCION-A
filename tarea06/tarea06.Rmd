@@ -1,0 +1,106 @@
+---
+title: "tarea_03"
+output: html_document
+---
+
+Lectura de bibliotecas
+```{r}
+library(readxl)
+library(randomForest)
+```
+
+dirección del archivo
+```{r}
+path <- "base-de-datos-violencia-intrafamiliar-ano-2024_v3.xlsx"
+```
+
+Cargar archivo
+```{r}
+data <- read_excel(path)
+```
+
+```{r}
+datar <- data[, c("VIC_SEXO", "AGR_SEXO", "AGR_EDAD", "AGR_ALFAB", "AGR_TRABAJA", "AGR_EST_CIV", "AGR_DEDICA", "AGR_ESCOLARIDAD")]
+```
+
+```{r}
+datar$VIC_SEXO <- as.factor(data$VIC_SEXO)
+```
+
+```{r}
+datar <- na.omit(datar)
+```
+
+```{r}
+set.seed(100)
+```
+
+```{r}
+datar <- datar[sample(1:nrow(datar)),]
+```
+
+```{r}
+index <- sample(1:nrow(datar), 0.8*nrow(datar))
+```
+
+```{r}
+train <- datar[index,]
+test <- datar[-index,]
+```
+
+```{r}
+bosque <- randomForest(
+  VIC_SEXO ~
+    AGR_SEXO +
+    AGR_EDAD +
+    AGR_ALFAB +
+    AGR_TRABAJA +
+    AGR_EST_CIV +
+    AGR_DEDICA +
+    AGR_ESCOLARIDAD,
+  data = train,
+  ntree = 100,
+  mtry = 4
+)
+```
+
+```{r}
+prueba <- predict(bosque, test)
+prueba
+```
+
+```{r}
+matriz <- table(test$VIC_SEXO, prueba)
+matriz
+```
+
+```{r}
+pre <- sum(diag(matriz))/sum(matriz)
+pre
+```
+
+```{r}
+persona <- data.frame(
+  AGR_SEXO = c(2),
+  AGR_EDAD = c(35),
+  AGR_ALFAB = c(1),
+  AGR_TRABAJA = c(2),
+  AGR_EST_CIV = c(2),
+  AGR_DEDICA = c(4),
+  AGR_ESCOLARIDAD = c(32)
+)
+```
+
+```{r}
+result <- predict(bosque, persona, type="prob")
+result
+```
+
+```{r}
+plot(bosque)
+```
+
+
+
+
+
