@@ -50,14 +50,6 @@ df_final <- subset(df_final, Repitente != '9')
 df_final <- subset(df_final, Graduando != '9')
 ```
 
-Filtros para delimitar grupos de interes
-```{r}
-#df_final <- subset(df_final, Sector == '1') # Público
-#df_final <- subset(df_final, Área == '2') # Rural
-#df_final <- subset(df_final, Sexo == '1') # Hombre
-#df_final <- subset(df_final, Repitente == '2') # No es repitente
-```
-
 Remover columnas que no aportan información
 ```{r}
 df_final <- subset(df_final, select = -Año)
@@ -68,22 +60,13 @@ df_final <- subset(df_final, select = -Departamento)
 df_final <- subset(df_final, select = -Grado)
 ```
 
-Remover columnas que filtramos valores en específicos
-```{r}
-#df_final <- subset(df_final, select = -Sector)
-#df_final <- subset(df_final, select = -Área)
-#df_final <- subset(df_final, select = -Sexo)
-#df_final <- subset(df_final, select = -Repitente)
-```
-
-Reglas
+Creación de observación
 ```{r}
 df_final$feature = ifelse(df_final$Área==1, 1, 0)
 df_final$feature
 ```
 
-Revisar reglas
-Ordenamos de forma descedente según la columna lift porque nos ayuda a encontrar relaciones interesantes
+Árbol
 ```{r}
 arbol <- rpart(
   feature ~
@@ -94,17 +77,18 @@ arbol <- rpart(
     Resultado_F +
     Graduando + 
     Sector +
-    #Área +
     Sexo +
     Repitente,
   data = df_final, method = "class"
 )
 ```
 
+Gráfica
 ```{r}
 rpart.plot(arbol, type=2, extra=0, under=TRUE, fallen.leaves=TRUE, box.palette ="BuGn", main="Gráfica", cex=0.5)
 ```
 
+Creacion de persona
 ```{r}
 persona <- data.frame(
   Nivel = c(3),
@@ -114,12 +98,12 @@ persona <- data.frame(
   Resultado_F = c(1),
   Graduando = c(1),
   Sector = c(1),
-  #Área = c(2),
   Sexo = c(1),
   Repitente = c(1)
 )
 ```
 
+Prediccion
 ```{r}
 result <- predict(arbol, persona, type = "prob")
 result
