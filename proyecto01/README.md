@@ -20,7 +20,7 @@ El proyecto está elaborado en 2 partes:
 | Título | Descripción |
 | ----------- | ----------- |
 | [Parte 01](parte01) | Utilizar los algoritmos Apriori, FP Growth y K-Means |
-| [Parte 02](parte02) | Pendiente de definir |
+| [Parte 02](parte02) | Utilizar los algoritmos de árbol de decisión, Bosques Aleatorios y Redes Neuronales |
 
 ---
 [Regresar](..)
