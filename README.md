@@ -14,4 +14,5 @@ En el siguiente repositorio encontraremos tareas y proyectos elaborados en el le
 | [Tarea 04](tarea04) | Utilizar el algoritmo K-Means |
 | [Tarea 05](tarea05) | Utilizar el algoritmo Árbol de decisión |
 | [Tarea 06](tarea06) | Utilizar el algoritmo Bosques de decisión |
+| [Tarea 07](tarea07) | Utilizar el algoritmo Redes Neuronales |
 | [Proyecto 01](proyecto01) | Utilizar los algoritmos antes vistos |
